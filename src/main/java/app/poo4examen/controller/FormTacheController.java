@@ -4,6 +4,7 @@ import app.poo4examen.model.Etat;
 import app.poo4examen.model.JsonDataManager;
 import app.poo4examen.model.Tache;
 import app.poo4examen.util.SceneManager;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
@@ -20,58 +21,46 @@ public class FormTacheController {
     @FXML private Button btnValider;
     @FXML private Button btnAnnuler;
 
-    private Tache tacheEnEdition = null;
-
     @FXML
     public void initialize() {
-        cbPriorite.getItems().addAll(1, 2, 3, 4, 5);
-        cbPriorite.getSelectionModel().selectFirst();
+        cbPriorite.setItems(FXCollections.observableArrayList(1, 2, 3, 4, 5));
 
-        tacheEnEdition = TachesController.getTacheSelectionnee();
-        if (tacheEnEdition != null) {
-            txtNom.setText(tacheEnEdition.getNom());
-            txtPersonne.setText(tacheEnEdition.getPersonne());
-            cbPriorite.setValue(tacheEnEdition.getPriorite());
+        Tache tacheAEditer = TachesController.getTacheSelectionnee();
 
-            if (tacheEnEdition.getEtat() == Etat.TO_DO) rbToDo.setSelected(true);
-            else if (tacheEnEdition.getEtat() == Etat.DOING) rbDoing.setSelected(true);
-            else if (tacheEnEdition.getEtat() == Etat.DONE) rbDone.setSelected(true);
+        // Pré-remplissage si modification, sinon valeurs par défaut
+        if (tacheAEditer != null) {
+            txtNom.setText(tacheAEditer.getNom());
+            txtPersonne.setText(tacheAEditer.getPersonne());
+            cbPriorite.setValue(tacheAEditer.getPriorite());
+            if (tacheAEditer.getEtat() == Etat.TO_DO) rbToDo.setSelected(true);
+            else if (tacheAEditer.getEtat() == Etat.DOING) rbDoing.setSelected(true);
+            else if (tacheAEditer.getEtat() == Etat.DONE) rbDone.setSelected(true);
         } else {
+            cbPriorite.getSelectionModel().selectFirst();
             rbToDo.setSelected(true);
         }
 
-        btnValider.setOnAction(e -> enregistrer());
-        btnAnnuler.setOnAction(e -> SceneManager.changerScene("TachesView.fxml", "Organisation des tâches"));
-    }
-
-    private void enregistrer() {
-        String nom = txtNom.getText();
-        String personne = txtPersonne.getText();
-        int priorite = cbPriorite.getValue() != null ? cbPriorite.getValue() : 1;
-
-        Etat etat = Etat.TO_DO;
-        if (rbDoing.isSelected()) etat = Etat.DOING;
-        else if (rbDone.isSelected()) etat = Etat.DONE;
-
-        final Etat etatFinal = etat;
-
-        // MULTITHREADING pour l'enregistrement JSON
-        Thread threadSauvegarde = new Thread(() -> {
+        btnValider.setOnAction(e -> {
             List<Tache> liste = JsonDataManager.chargerTaches();
+            Etat etat = rbDone.isSelected() ? Etat.DONE : (rbDoing.isSelected() ? Etat.DOING : Etat.TO_DO);
 
-            if (tacheEnEdition != null) {
-                liste.removeIf(t -> t.getNom().equalsIgnoreCase(tacheEnEdition.getNom()));
+            if (tacheAEditer != null) {
+                // Modification : mettre à jour la tâche existante
+                tacheAEditer.setNom(txtNom.getText());
+                tacheAEditer.setPersonne(txtPersonne.getText());
+                tacheAEditer.setEtat(etat);
+                tacheAEditer.setPriorite(cbPriorite.getValue());
+            } else {
+                // Ajout : créer une nouvelle tâche
+                liste.add(new Tache(txtNom.getText(), txtPersonne.getText(), etat, cbPriorite.getValue()));
             }
 
-            liste.add(new Tache(nom, personne, etatFinal, priorite));
             JsonDataManager.sauvegarderTaches(liste);
-
-            javafx.application.Platform.runLater(() ->
-                    SceneManager.changerScene("TachesView.fxml", "Organisation des tâches")
-            );
+            SceneManager.changerScene("TachesView.fxml", "Organisation des tâches");
         });
 
-        threadSauvegarde.setDaemon(true);
-        threadSauvegarde.start();
+        btnAnnuler.setOnAction(e ->
+                SceneManager.changerScene("TachesView.fxml", "Organisation des tâches")
+        );
     }
 }

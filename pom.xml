@@ -11,6 +11,8 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
         <junit.version>5.12.1</junit.version>
     </properties>
 
@@ -72,8 +74,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.13.0</version>
                 <configuration>
-                    <source>8</source>
-                    <target>8</target>
+                    <source>17</source>
+                    <target>17</target>
                 </configuration>
             </plugin>
             <plugin>
@@ -86,6 +88,10 @@
                         <id>default-cli</id>
                         <configuration>
                             <mainClass>app.poo4examen/app.poo4examen.HelloApplication</mainClass>
+                            <options>
+                                <option>--add-modules</option>
+                                <option>com.google.gson</option>
+                            </options>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
                             <jlinkImageName>app</jlinkImageName>

@@ -7,10 +7,7 @@ import app.poo4examen.util.SceneManager;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ProgressBar;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -39,7 +36,7 @@ public class TachesController {
         colDoing.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getDoing()));
         colDone.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getDone()));
 
-        chargerEtAfficherDonnees();
+        rafraichirTableau();
 
         btnAjouter.setOnAction(e -> {
             tacheSelectionnee = null;
@@ -59,10 +56,9 @@ public class TachesController {
         );
     }
 
-    private void chargerEtAfficherDonnees() {
+    private void rafraichirTableau() {
         List<Tache> liste = JsonDataManager.chargerTaches();
 
-        // Utilisation des STREAMS & LAMBDAS pour trier et filtrer
         List<Tache> listToDo = liste.stream()
                 .filter(t -> t.getEtat() == Etat.TO_DO)
                 .sorted((t1, t2) -> Integer.compare(t1.getPriorite(), t2.getPriorite()))
@@ -94,14 +90,11 @@ public class TachesController {
 
         tableTaches.setItems(rows);
 
-        // Mettre à jour la ProgressBar via un Thread séparé
-        new Thread(() -> {
-            long total = liste.size();
-            long faites = liste.stream().filter(t -> t.getEtat() == Etat.DONE).count();
-            double ratio = (total == 0) ? 0.0 : (double) faites / total;
-
-            javafx.application.Platform.runLater(() -> progressBar.setProgress(ratio));
-        }).start();
+        // Mise à jour de la barre de progression
+        long total = liste.size();
+        long faites = liste.stream().filter(t -> t.getEtat() == Etat.DONE).count();
+        double ratio = (total == 0) ? 0.0 : (double) faites / total;
+        progressBar.setProgress(ratio);
     }
 
     public static class TacheRow {

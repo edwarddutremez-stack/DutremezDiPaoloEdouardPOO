@@ -5,14 +5,16 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" spacing="20.0" style="-fx-background-color: #e6dbf1;" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+      prefHeight="400.0" prefWidth="600.0" spacing="20.0" style="-fx-background-color: #e6dbf1;"
+      xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="app.poo4examen.controller.AccueilController">
    <children>
       <Label style="-fx-font-weight: bold;" text="Bienvenue!" textFill="#b030c9">
          <font>
             <Font size="36.0" />
          </font>
       </Label>
-      <Button fx:id="btnTaches" mnemonicParsing="false" style="-fx-border-color: #9B5DE5; -fx-background-color: trasnparent; -fx-padding: 8 20; -fx-background-radius: 15px;" text="Taĉhes" />
+      <Button fx:id="btnTaches" mnemonicParsing="false" style="-fx-border-color: #9B5DE5; -fx-background-color: transparent; -fx-padding: 8 20; -fx-background-radius: 15px;" text="Tâches" />
    </children>
 </VBox>

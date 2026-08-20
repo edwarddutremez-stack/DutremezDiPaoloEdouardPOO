@@ -11,8 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #ffebbb;" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #ffebbb;" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.poo4examen.controller.TachesController">
    <padding>
       <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
    </padding>
@@ -30,11 +29,11 @@
    </top>
    <center>
       <TableView fx:id="tableTaches" prefHeight="226.0" prefWidth="560.0" BorderPane.alignment="CENTER">
-        <columns>
-          <TableColumn fx:id="colToDo" prefWidth="160.0" text="To do" />
-          <TableColumn fx:id="colDoing" prefWidth="219.0" text="Doing" />
+         <columns>
+            <TableColumn fx:id="colToDo" prefWidth="160.0" text="To do" />
+            <TableColumn fx:id="colDoing" prefWidth="219.0" text="Doing" />
             <TableColumn fx:id="colDone" prefWidth="180.0" text="Done" />
-        </columns>
+         </columns>
       </TableView>
    </center>
    <bottom>

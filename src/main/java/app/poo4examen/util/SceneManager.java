@@ -21,9 +21,12 @@ public class SceneManager {
                     SceneManager.class.getResource("/app/poo4examen/views/" + fxmlFile)
             );
             Parent root = loader.load();
+
+            // Appliquer la scène
             primaryStage.setTitle(titre);
             primaryStage.setScene(new Scene(root));
             primaryStage.show();
+
             return loader.getController();
         } catch (IOException e) {
             e.printStackTrace();

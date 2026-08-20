@@ -15,15 +15,8 @@ public class SupprController {
     @FXML
     public void initialize() {
         btnValiderSuppr.setOnAction(e -> {
-            // MULTITHREADING pour la suppression
-            Thread threadSuppr = new Thread(() -> {
-                JsonDataManager.sauvegarderTaches(new ArrayList<>());
-                javafx.application.Platform.runLater(() ->
-                        SceneManager.changerScene("TachesView.fxml", "Organisation des tâches")
-                );
-            });
-            threadSuppr.setDaemon(true);
-            threadSuppr.start();
+            JsonDataManager.sauvegarderTaches(new ArrayList<>());
+            SceneManager.changerScene("TachesView.fxml", "Organisation des tâches");
         });
 
         btnAnnulerSuppr.setOnAction(e ->

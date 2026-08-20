@@ -14,7 +14,10 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-padding: 25; -fx-background-color: #FDE2E4;" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+      prefHeight="400.0" prefWidth="600.0" style="-fx-padding: 25; -fx-background-color: #FDE2E4;"
+      xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="app.poo4examen.controller.FormTacheController">
    <children>
       <Label style="-fx-font-weight: bold; -fx-text-fill: #2C5E8A;" text="Modification d'une tâche">
          <font>
@@ -34,7 +37,7 @@
          </rowConstraints>
          <children>
             <Label prefHeight="17.0" prefWidth="147.0" text="Nom de la tâche" />
-            <Label text="Personnne attitrée" GridPane.rowIndex="1" />
+            <Label text="Personne attitrée" GridPane.rowIndex="1" />
             <Label text="Etat de la tâche" GridPane.rowIndex="2" />
             <Label text="Priorité de la tâche" GridPane.rowIndex="3" />
             <TextField fx:id="txtNom" text="connexion" GridPane.columnIndex="1" />

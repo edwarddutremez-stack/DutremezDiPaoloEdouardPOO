@@ -1,8 +1,14 @@
 [
   {
-    "nom": "Connexion",
-    "personne": "Robert",
+    "nom": "BackGround",
+    "personne": "Eddy",
+    "etat": "DOING",
+    "priorite": 2
+  },
+  {
+    "nom": "java",
+    "personne": "Matteo",
     "etat": "TO_DO",
-    "priorite": 1
+    "priorite": 4
   }
 ]
