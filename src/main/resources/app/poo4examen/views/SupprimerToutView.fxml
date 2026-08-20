@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" spacing="30.0" style="-fx-background-color: #FFF0F5;" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
+   <padding>
+      <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+   </padding>
+   <children>
+      <Label style="-fx-font-weight: bold; -fx-text-fill: #C06C84;" text="Suppression de toutes les tâches">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label text="Êtes-vous sûr.e de voiuloir supprimer toutes les tâches?">
+         <font>
+            <Font size="16.0" />
+         </font>
+         <VBox.margin>
+            <Insets top="20.0" />
+         </VBox.margin>
+      </Label>
+      <Label style="-fx-text-fill: red;" text="Une fois supprimées, elles ne pourront plus être récupérées">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+         <VBox.margin>
+            <Insets top="-20.0" />
+         </VBox.margin>
+      </Label>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0">
+         <children>
+            <Button fx:id="btnValiderSuppr" mnemonicParsing="false" style="-fx-background-color: #B5EAD7; -fx-padding: 8 20; -fx-border-color: #70AE98;" text="Valider" />
+            <Button fx:id="btnAnnulerSuppr" mnemonicParsing="false" style="-fx-background-color: #ff847c; -fx-padding: 8 20; -fx-border-color: #BE3144;" text="Annuler" />
+         </children>
+      </HBox>
+   </children>
+</VBox>
