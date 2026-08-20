@@ -42,17 +42,22 @@ public class FormTacheController {
 
         btnValider.setOnAction(e -> {
             List<Tache> liste = JsonDataManager.chargerTaches();
-            Etat etat = rbDone.isSelected() ? Etat.DONE : (rbDoing.isSelected() ? Etat.DOING : Etat.TO_DO);
+            Etat nouvelEtat = rbDone.isSelected() ? Etat.DONE : (rbDoing.isSelected() ? Etat.DOING : Etat.TO_DO);
 
             if (tacheAEditer != null) {
-                // Modification : mettre à jour la tâche existante
-                tacheAEditer.setNom(txtNom.getText());
-                tacheAEditer.setPersonne(txtPersonne.getText());
-                tacheAEditer.setEtat(etat);
-                tacheAEditer.setPriorite(cbPriorite.getValue());
+                // Retrouver la tâche dans la liste chargée par son nom / personne ou référence
+                for (Tache t : liste) {
+                    if (t.getNom().equals(tacheAEditer.getNom()) && t.getPersonne().equals(tacheAEditer.getPersonne())) {
+                        t.setNom(txtNom.getText());
+                        t.setPersonne(txtPersonne.getText());
+                        t.setEtat(nouvelEtat);
+                        t.setPriorite(cbPriorite.getValue());
+                        break;
+                    }
+                }
             } else {
-                // Ajout : créer une nouvelle tâche
-                liste.add(new Tache(txtNom.getText(), txtPersonne.getText(), etat, cbPriorite.getValue()));
+                // Nouvelle tâche
+                liste.add(new Tache(txtNom.getText(), txtPersonne.getText(), nouvelEtat, cbPriorite.getValue()));
             }
 
             JsonDataManager.sauvegarderTaches(liste);

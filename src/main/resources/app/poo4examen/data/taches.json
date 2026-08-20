@@ -2,13 +2,31 @@
   {
     "nom": "BackGround",
     "personne": "Eddy",
-    "etat": "DOING",
-    "priorite": 2
+    "etat": "DONE",
+    "priorite": 4
   },
   {
     "nom": "java",
     "personne": "Matteo",
     "etat": "TO_DO",
+    "priorite": 2
+  },
+  {
+    "nom": "SceneBuilder",
+    "personne": "Arnaud",
+    "etat": "DOING",
     "priorite": 4
+  },
+  {
+    "nom": "Gson",
+    "personne": "Eddy",
+    "etat": "TO_DO",
+    "priorite": 5
+  },
+  {
+    "nom": "Creation des groupes",
+    "personne": "Boss",
+    "etat": "DONE",
+    "priorite": 1
   }
 ]

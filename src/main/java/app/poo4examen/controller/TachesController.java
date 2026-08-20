@@ -32,9 +32,9 @@ public class TachesController {
 
     @FXML
     public void initialize() {
-        colToDo.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getToDo()));
-        colDoing.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getDoing()));
-        colDone.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getDone()));
+        colToDo.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getToDoText()));
+        colDoing.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getDoingText()));
+        colDone.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getDoneText()));
 
         rafraichirTableau();
 
@@ -43,11 +43,29 @@ public class TachesController {
             SceneManager.changerScene("AjoutTacheView.fxml", "Ajout d'une nouvelle tâche");
         });
 
+        // Modification : Récupère la tâche selon la colonne cliquée/sélectionnée
         btnModifier.setOnAction(e -> {
             TacheRow row = tableTaches.getSelectionModel().getSelectedItem();
-            if (row != null && row.getTacheOriginale() != null) {
-                tacheSelectionnee = row.getTacheOriginale();
-                SceneManager.changerScene("ModifTacheView.fxml", "Modification d'une tâche");
+            if (row != null) {
+                // Détermine la colonne actuellement sélectionnée
+                TablePosition<?, ?> pos = tableTaches.getSelectionModel().getSelectedCells().isEmpty()
+                        ? null : tableTaches.getSelectionModel().getSelectedCells().get(0);
+
+                if (pos != null) {
+                    int col = pos.getColumn();
+                    if (col == 0) tacheSelectionnee = row.getTacheToDo();
+                    else if (col == 1) tacheSelectionnee = row.getTacheDoing();
+                    else if (col == 2) tacheSelectionnee = row.getTacheDone();
+                }
+
+                // Fallback si la colonne n'est pas identifiée directement
+                if (tacheSelectionnee == null) {
+                    tacheSelectionnee = row.getTachePremierDisponible();
+                }
+
+                if (tacheSelectionnee != null) {
+                    SceneManager.changerScene("ModifTacheView.fxml", "Modification d'une tâche");
+                }
             }
         });
 
@@ -59,6 +77,13 @@ public class TachesController {
     private void rafraichirTableau() {
         List<Tache> liste = JsonDataManager.chargerTaches();
 
+        // 1. Mise à jour ProgressBar
+        long total = liste.size();
+        long faites = liste.stream().filter(t -> t.getEtat() == Etat.DONE).count();
+        double ratio = (total == 0) ? 0.0 : (double) faites / total;
+        progressBar.setProgress(ratio);
+
+        // 2. Séparation par état
         List<Tache> listToDo = liste.stream()
                 .filter(t -> t.getEtat() == Etat.TO_DO)
                 .sorted((t1, t2) -> Integer.compare(t1.getPriorite(), t2.getPriorite()))
@@ -80,39 +105,44 @@ public class TachesController {
             Tache tDoing = i < listDoing.size() ? listDoing.get(i) : null;
             Tache tDone = i < listDone.size() ? listDone.get(i) : null;
 
-            rows.add(new TacheRow(
-                    tDo != null ? tDo.getNom() + " (" + tDo.getPersonne() + ")" : "",
-                    tDoing != null ? tDoing.getNom() + " (" + tDoing.getPersonne() + ")" : "",
-                    tDone != null ? tDone.getNom() + " (" + tDone.getPersonne() + ")" : "",
-                    tDo != null ? tDo : (tDoing != null ? tDoing : tDone)
-            ));
+            rows.add(new TacheRow(tDo, tDoing, tDone));
         }
 
         tableTaches.setItems(rows);
-
-        // Mise à jour de la barre de progression
-        long total = liste.size();
-        long faites = liste.stream().filter(t -> t.getEtat() == Etat.DONE).count();
-        double ratio = (total == 0) ? 0.0 : (double) faites / total;
-        progressBar.setProgress(ratio);
     }
 
+    // Classe interne ajustée pour porter les 3 tâches de la ligne séparément
     public static class TacheRow {
-        private final String toDo;
-        private final String doing;
-        private final String done;
-        private final Tache tacheOriginale;
+        private final Tache tacheToDo;
+        private final Tache tacheDoing;
+        private final Tache tacheDone;
 
-        public TacheRow(String toDo, String doing, String done, Tache tacheOriginale) {
-            this.toDo = toDo;
-            this.doing = doing;
-            this.done = done;
-            this.tacheOriginale = tacheOriginale;
+        public TacheRow(Tache tacheToDo, Tache tacheDoing, Tache tacheDone) {
+            this.tacheToDo = tacheToDo;
+            this.tacheDoing = tacheDoing;
+            this.tacheDone = tacheDone;
         }
 
-        public String getToDo() { return toDo; }
-        public String getDoing() { return doing; }
-        public String getDone() { return done; }
-        public Tache getTacheOriginale() { return tacheOriginale; }
+        public String getToDoText() {
+            return tacheToDo != null ? tacheToDo.getNom() + " (" + tacheToDo.getPersonne() + ")" : "";
+        }
+
+        public String getDoingText() {
+            return tacheDoing != null ? tacheDoing.getNom() + " (" + tacheDoing.getPersonne() + ")" : "";
+        }
+
+        public String getDoneText() {
+            return tacheDone != null ? tacheDone.getNom() + " (" + tacheDone.getPersonne() + ")" : "";
+        }
+
+        public Tache getTacheToDo() { return tacheToDo; }
+        public Tache getTacheDoing() { return tacheDoing; }
+        public Tache getTacheDone() { return tacheDone; }
+
+        public Tache getTachePremierDisponible() {
+            if (tacheToDo != null) return tacheToDo;
+            if (tacheDoing != null) return tacheDoing;
+            return tacheDone;
+        }
     }
 }
